@@ -89,7 +89,7 @@ void zzn12_ElementPrint(zzn12 x);
 void ecn2_Bytes128_Print(ecn2 x);
 void LinkCharZzn12(unsigned char* message, int len, zzn12 w, unsigned char* Z, int Zlen);
 int Test_Point(epoint* point);
-int* generate_multiplicative_polynomial(unsigned char hid[], int l, int n,
+big* generate_multiplicative_polynomial(unsigned char hid[], int l, int n,
 	unsigned char* R[]);
 
 void SM4_Block_Encrypt(unsigned char key[], unsigned char* message, int mlen, unsigned char

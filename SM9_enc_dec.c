@@ -800,7 +800,7 @@ int SM9_ReKeyGen(unsigned char hid[], unsigned char* IDB, unsigned char* message
  Function:generate_multiplicative_polynomial
  多项式生成函数，生成F（x）
  */
-int * generate_multiplicative_polynomial(unsigned char hid[], int l,unsigned char R[], int R_single[]) {// l为实际撤销量，R为待撤销用户id集合
+big* generate_multiplicative_polynomial(unsigned char hid[], int l,unsigned char R[], int R_single[]) {// l为实际撤销量，R为待撤销用户id集合
 	big* roots = malloc(l * sizeof(big));
 
 	// 初始化根
@@ -840,8 +840,14 @@ int * generate_multiplicative_polynomial(unsigned char hid[], int l,unsigned cha
 	xgcd(mult_f1, N, mult_f1, mult_f1, mult_f1);//求逆，计算mult_f1累乘的逆
 
 
-	big coefficients[50], temp;
-	for (int i = 0; i < l+1; i++) {
+	big temp;
+	big * coefficients = (big*)malloc(50 * sizeof(big));
+	if (coefficients == NULL) {
+		// 处理内存分配失败的情况
+		return NULL;
+	}
+
+	for (int i = 0; i < 50; i++) {
 		coefficients[i] = mirvar(0);
 	} // 初始化 系数数组
 	coefficients[0] = mirvar(1);
@@ -952,7 +958,7 @@ int SM9_Revoke(unsigned char hid[], unsigned char* IDB, unsigned char* message, 
 	unsigned char* Z = NULL;
 
 	//Step1:调用函数生成F(x)并输出
-	int* f = generate_multiplicative_polynomial(hid, l, R, R_single);
+	big* f = generate_multiplicative_polynomial(hid, l, R, R_single);
 
 	//Step2-1:Compute Rk1'=
 	//get rk1i to rk1pt
